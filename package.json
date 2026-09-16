@@ -1,0 +1,29 @@
+{
+  "name": "financas-api",
+  "version": "1.0.0",
+  "description": "Sistema de finanças",
+  "scripts": {
+    "build": "nest build",
+    "start": "nest start",
+    "start:dev": "nest start --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@nestjs/common": "12.0.3",
+    "@nestjs/config": "12.0.0",
+    "@nestjs/core": "12.0.3",
+    "@nestjs/mongoose": "12.0.0",
+    "@nestjs/platform-express": "12.0.3",
+    "mongoose": "9.10.1",
+    "reflect-metadata": "0.2.2",
+    "rxjs": "7.8.2"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "12.0.3",
+    "@nestjs/schematics": "12.0.3",
+    "@types/node": "22.20.3",
+    "typescript": "6.0.3"
+  }
+}

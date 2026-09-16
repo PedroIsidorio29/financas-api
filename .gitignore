@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.env*
+*.js
+*.js.map
+*.d.ts
+!nest-cli.json
+!tsconfig.json
+!tsconfig.build.json
+# Lock files
+
+*.lock
+pnpm-lock.yaml
+package-lock.json
