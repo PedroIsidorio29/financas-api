@@ -16,4 +16,5 @@ import { Module } from '@nestjs/common';
   providers: [UserService],
   controllers: [UserController]
 })
+
 export class UserModule { }
