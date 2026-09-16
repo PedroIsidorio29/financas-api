@@ -1,5 +1,6 @@
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
+import { UserModule } from '@/user/user.module';
 import { Module } from '@nestjs/common';
 
 const configModule = ConfigModule.forRoot({
@@ -19,6 +20,7 @@ const mongooseModule = MongooseModule.forRootAsync({
   imports: [
     configModule,
     mongooseModule,
+    UserModule
   ],
 })
 export class AppModule { }
