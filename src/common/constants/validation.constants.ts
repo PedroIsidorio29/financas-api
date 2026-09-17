@@ -1,0 +1,1 @@
+export const VALIDATION_METADATA_KEY = 'validation:rules';

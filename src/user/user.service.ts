@@ -17,7 +17,9 @@ export class UserService {
       email,
       password,
     });
-    return user.save();
+    console.log(user);
+    
+    // return user.save();
   }
 
 }
