@@ -1,5 +1,4 @@
 import { PipeValidation } from '@/common/pipes/validation.pipe';
-import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app/app.module';
 import { NestFactory } from '@nestjs/core';
 import dns from 'node:dns';
@@ -10,7 +9,6 @@ async function main() {
   const app = await NestFactory.create(AppModule);
 
   app.setGlobalPrefix('financas');
-  app.useGlobalPipes(new ValidationPipe());
   app.useGlobalPipes(new PipeValidation());
 
   const port = process.env.PORT || 3000;

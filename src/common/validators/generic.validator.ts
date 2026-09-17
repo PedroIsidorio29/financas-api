@@ -6,3 +6,11 @@ export function isEmail(value: unknown): boolean {
 export function nonEmpty(value: unknown): boolean {
   return !!value
 }
+
+export function minLength(qnt: number, value: unknown): boolean {
+  return String(value).length >= qnt
+}
+
+export function maxLength(qnt: number, value: unknown): boolean {
+  return String(value).length <= qnt
+}
