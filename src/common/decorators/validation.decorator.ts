@@ -2,10 +2,10 @@ import { VALIDATION_METADATA_KEY } from '@/common/constants/validation.constants
 import 'reflect-metadata';
 
 export type TGenericDecorator = {
-  type: string
-  message?: string
-  args?: unknown
-}
+  type: string;
+  message?: string;
+  args?: unknown;
+};
 
 function genericDecorator(item: TGenericDecorator) {
   return function (target: object, propertyKey: string) {
@@ -32,12 +32,12 @@ export function IsEmail(message?: string) {
   return genericDecorator(_body)
 }
 
-export function MinLength(qnt: number, message?: string) {
-  const _body = { type: 'minLength', message, qnt }
+export function MinLength(args: number, message?: string) {
+  const _body = { type: 'minLength', message, args }
   return genericDecorator(_body)
 }
 
-export function MaxLength(qnt: number, message?: string) {
-  const _body = { type: 'maxLength', message, qnt }
+export function MaxLength(args: number, message?: string) {
+  const _body = { type: 'maxLength', message, args }
   return genericDecorator(_body)
 }
