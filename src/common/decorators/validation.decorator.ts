@@ -4,7 +4,7 @@ import 'reflect-metadata';
 export type TGenericDecorator = {
   type: string
   message?: string
-  qnt?: number
+  args?: unknown
 }
 
 function genericDecorator(item: TGenericDecorator) {
