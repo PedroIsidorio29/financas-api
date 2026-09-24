@@ -1,6 +1,7 @@
 
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException,ConflictException } from '@nestjs/common';
 import { User, UserDocument } from '@/user/schemas/user.schema';
+import { AuthService } from '@/auth/auth.service';
 import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 import { Model } from 'mongoose';
@@ -10,10 +11,17 @@ export class UserService {
   constructor(
     @InjectModel(User.name)
     private readonly userModel: Model<UserDocument>,
+    private readonly authService: AuthService,
   ) { }
 
   async create(name: string, email: string, password: string) {
     const passwordHash = await bcrypt.hash(password, 10);
+
+    const findEmail = await this.findByEmail(email.trim());
+
+    if (!!findEmail)
+      throw new ConflictException('Já existe um usuario cadastrado com esse email');
+
     const user = new this.userModel({
       name,
       email,
@@ -26,10 +34,10 @@ export class UserService {
     return this.userModel.findOne({ email });
   }
 
-  async login(email: string, password: string) {
+  async login(_email: string, password: string) {
     const errorMsg = "Login inválido, verifique seus dados e tente novamente"
 
-    const user = await this.findByEmail(email);
+    const user = await this.findByEmail(_email);
 
     if (!user)
       throw new UnauthorizedException(errorMsg);
@@ -39,7 +47,13 @@ export class UserService {
     if (!passwordMatch)
       throw new UnauthorizedException(errorMsg);
 
-    return user;
+    const accessToken = this.authService.generateToken(
+      user._id.toString(),
+      user.email,
+    );
+
+    // const { _id, name, email } = user
+    return { accessToken }
   }
 
 }
