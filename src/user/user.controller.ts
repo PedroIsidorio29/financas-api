@@ -1,5 +1,6 @@
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { CreateUserDto } from '@/user/dto/create-user.dto';
-import { Body, Controller, Post, } from '@nestjs/common';
+import { LoginUserDto } from '@/user/dto/login-user.dto';
 import { UserService } from '@/user/user.service';
 
 @Controller('user')
@@ -14,6 +15,19 @@ export class UserController {
       createUserDto.name,
       createUserDto.email,
       createUserDto.password
+    );
+  }
+
+  @Get('email')
+  findByEmail(@Query('email') email: string) {
+    return this.userService.findByEmail(email);
+  }
+
+  @Post('login')
+  login(@Body() loginUserDto: LoginUserDto) {
+    return this.userService.login(
+      loginUserDto.email,
+      loginUserDto.password,
     );
   }
 }

@@ -2,6 +2,7 @@ import { ArgumentMetadata, BadRequestException, Injectable, PipeTransform, } fro
 import { isEmail, nonEmpty, minLength, maxLength } from '@/common/validators/generic.validator';
 import { VALIDATION_METADATA_KEY } from '@/common/constants/validation.constants';
 import { TGenericDecorator } from '@/common/decorators/validation.decorator';
+import { validators } from '@/common/validators/validator.registry';
 import 'reflect-metadata';
 
 @Injectable()
@@ -12,25 +13,23 @@ export class PipeValidation implements PipeTransform {
     if (!metatype) return value;
 
     const rules = Reflect.getMetadata(VALIDATION_METADATA_KEY, metatype.prototype) ?? {};
-    const menssageErrorList: Array<string | undefined> = []
+    const errorList: Array<string | undefined> = []
 
     for (const property in rules) {
-      const rule: Array<TGenericDecorator> = rules[property];
+      const propertyRules: Array<TGenericDecorator> = rules[property];
 
-      menssageErrorList.push(
-        ...rule.map(({ type, message, qnt }) => {
-          const validacao: Record<string, () => string | undefined> = {
-            "isEmail": () => !isEmail(value[property]) ? (message ?? "Informe um e-mail válido!") : undefined,
-            'nonEmpty': () => !nonEmpty(value[property]) ? (message ?? "Não pode ser vazio!") : undefined,
-            'minLength': () => !minLength(qnt!, value[property]) ? (message ?? `Não pode conter menos de ${qnt} caracteres`) : undefined,
-            'maxLength': () => !maxLength(qnt!, value[property]) ? (message ?? `Não pode conter mais de ${qnt} caracteres!`) : undefined,
-          }
-          return validacao[type]() ?? undefined
+      errorList.push(
+        ...propertyRules.map(({ type, message, args }) => {
+          const validator = validators[type];
+          if (!validator) return;
+
+          const valid = validator(value[property], ...([args ?? null]));
+          if (!valid) return message ?? `O campo ${property} é inválido.`
+
         }).filter((i) => i))
     }
 
-    if (menssageErrorList.length)
-      throw new BadRequestException(menssageErrorList)
+    if (errorList.length) throw new BadRequestException(errorList)
 
     return value;
   }

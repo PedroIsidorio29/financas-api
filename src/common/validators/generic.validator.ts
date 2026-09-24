@@ -7,10 +7,12 @@ export function nonEmpty(value: unknown): boolean {
   return !!value
 }
 
-export function minLength(qnt: number, value: unknown): boolean {
+export function minLength(value: unknown, qnt: number): boolean {
+  if (typeof qnt !== "number") return false
   return String(value).length >= qnt
 }
 
-export function maxLength(qnt: number, value: unknown): boolean {
+export function maxLength(value: unknown, qnt: number): boolean {
+  if (typeof qnt !== "number") return false
   return String(value).length <= qnt
 }
